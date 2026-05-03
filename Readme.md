@@ -1,3 +1,5 @@
+[![DeepWiki][DeepWiki_Logo]][DeepWiki_Repo] (sometimes AI explains it better)
+
 ## What
 
 (2026-05)
@@ -113,6 +115,9 @@ Part.Even.Middle: 46
 * [`workshop`][workshop] -- My personal Lua framework
 * [My other repositories][contents]
 
+
+[DeepWiki_Logo]: https://deepwiki.com/badge.svg
+[DeepWiki_Repo]: https://deepwiki.com/martin-eden/Lua-RangesTree
 
 [src]: src/
 [string_test]: tests/Test_StringRanges.lua
