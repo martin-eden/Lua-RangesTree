@@ -10,10 +10,12 @@ node ranges to tree root's frame.
 
 ## Usage
 
-(Below is annotated current example from "Getting string".)
+(Below is annotated current example from ["Getting string"][string_test].)
 
-Okay, you have string with fixed data layout: `~``1``2``3``4``-``-``5``6``7``8``9``=`
-There is "real data" part. You need to get two middle characters
+Okay, you have string with fixed data layout:
+`~` `1` `2` `3` `4` `-` `-` `5` `6` `7` `8` `9` `=`
+
+There is "real data" part with digits. You need to get two middle characters
 that are at even positions in "real data" part.
 
 Preparation and printing of initial "raw data".
@@ -63,7 +65,7 @@ We are using two convenience functions `AddNameAndRanges()` and
 `AddNameAndRange()`. But core functions are `AddName()` and `AddRange()`.
 
 
-Getting and printing our "tho middle even chars from essential data":
+Getting and printing our "two middle even chars from essential data":
 
 ```Lua
 OutputData = create_string_value()
@@ -84,7 +86,7 @@ Part.Even.Middle: 46
 * Ranges tree does not store any data. It stores ranges map for fields.
   Real data is read only from `apply_ranges()`.
 
-  It means that you can use created ranges mask for any other data
+  This means you can use created ranges mask for any other data
   in same format. No need to recreate tree nodes.
 
 
@@ -92,8 +94,8 @@ Part.Even.Middle: 46
 
   * [`src/`][src]
   * Examples
-    * [Getting bits][bits_test]
     * [Getting string][string_test]
+    * [Getting bits][bits_test]
 
 
 ## Requirements
@@ -106,6 +108,14 @@ Part.Even.Middle: 46
   * Clone repo/delete directory
 
 
+## See also
+
+* [`workshop`][workshop] -- My personal Lua framework
+* [My other repositories][contents]
+
+
 [src]: src/
-[bits_test]: tests/Test_BitsRanges.lua
 [string_test]: tests/Test_StringRanges.lua
+[bits_test]: tests/Test_BitsRanges.lua
+[workshop]: https://github.com/martin-eden/workshop
+[contents]: https://github.com/martin-eden/contents
