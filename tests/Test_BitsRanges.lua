@@ -5,7 +5,7 @@
   Last mod.: 2026-05-03
 ]]
 
--- [[ Develop
+--[[ Develop
 package.path = package.path .. ';../../../?.lua'
 --]]
 
