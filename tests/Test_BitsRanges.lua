@@ -2,7 +2,7 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-05-03
+  Last mod.: 2026-05-10
 ]]
 
 --[[ Develop
@@ -14,11 +14,9 @@ package.path = package.path .. ';../src/?.lua'
 require('workshop.base')
 
 -- Imports:
--- _G.t2s = request('!.table.as_string')
-
-local create_bits_value = request('BitsValue.create')
-local create_ranges_tree = request('RangesTree.create')
-local create_range = request('Range.create')
+local create_bits_value = request('BitsValue.Interface').create
+local create_ranges_tree = request('RangesTree.Interface').create
+local create_range = request('Range.Interface').create
 local apply_ranges = request('apply_ranges')
 
 --[[
@@ -65,11 +63,8 @@ OutputData = create_bits_value()
 apply_ranges(InputData, BitFields:GetRanges('HighNibbles'), OutputData)
 print(string.format('High nibbles: 0x%06X', OutputData:GetValue()))
 
--- print(t2s(InputData))
--- print(t2s(BitFields))
--- print(t2s(OutputData))
-
 --[[
   2026-04-30
   2026-05-01
+  2026-05-10
 ]]
