@@ -2,18 +2,34 @@
 
 --[[
   Author: Martin Eden
-  Last mod.: 2026-05-03
+  Last mod.: 2026-05-09
 ]]
 
 --[[
   Data structure
 
-    Tree map of Range objects by name part
+    Ranges [t] - list of Range objects
+    Children [t] - map of nodes by name
+]]
+
+--[[
+  Interface (alias "me")
+
+    AddName ( me name )
+    AddRange ( me name range )
+    GetRanges ( me name )
+
+    AddNameAndRange ( me name range )
+    AddRanges ( me name ranges )
+    AddNameAndRanges ( me name ranges )
+
+    create ( )
 ]]
 
 -- Imports:
+local attach_methods = request('!.table.attach_methods')
 local split_string = request('!.string.split')
-local create_range = request('^.Range.create')
+local add_to_list = request('!.concepts.list.add_item')
 local get_real_ranges = request('Freetown.get_real_ranges')
 
 local names_delimiter = '.'
@@ -33,15 +49,15 @@ local parse_name =
     local Node = Me
 
     for idx, part_name in ipairs(NamePath) do
-      Node = Node[part_name] or Node
-      table.insert(NodesPath, Node)
+      Node = Node.Children[part_name] or Node
+      add_to_list(NodesPath, Node)
     end
 
     return NamePath, NodesPath
   end
 
--- Export:
-return
+local Interface
+Interface =
   {
     AddName =
       function(Me, name)
@@ -50,9 +66,9 @@ return
         local LeafNode = Nodes[#Nodes]
         local leaf_name = Names[#Names]
 
-        assert_nil(LeafNode[leaf_name])
+        assert_nil(LeafNode.Children[leaf_name])
 
-        LeafNode[leaf_name] = { }
+        LeafNode.Children[leaf_name] = Interface.create()
       end,
     AddRange =
       function(Me, name, Range)
@@ -60,7 +76,7 @@ return
 
         local LeafNode = Nodes[#Nodes]
 
-        table.insert(LeafNode, Range)
+        add_to_list(LeafNode.Ranges, Range)
       end,
     GetRanges =
       function(Me, name)
@@ -68,18 +84,16 @@ return
 
         local LeafNode = Nodes[#Nodes]
 
-        --[[
-          Requested ranges to read are same as node.
-          Squeeze them to one read request.
-        --]]
-        local RangesToRead
+        if (#LeafNode.Ranges == 0) then
+          error('Node have no ranges')
+        end
+
         local total_length = 0
-        for idx, Rec in ipairs(LeafNode) do
+        for idx, Rec in ipairs(LeafNode.Ranges) do
           total_length = total_length + Rec:GetLength()
         end
-        RangesToRead = { create_range(1, total_length) }
 
-        return get_real_ranges(RangesToRead, Nodes)
+        return get_real_ranges(total_length, Nodes)
       end,
     --
     AddNameAndRange =
@@ -98,11 +112,25 @@ return
         Me:AddName(name)
         Me:AddRanges(name, Ranges)
       end,
+
+    create =
+      function()
+        local Result = { Ranges = { }, Children = { } }
+
+        attach_methods(Result, Interface)
+
+        return Result
+      end,
   }
+
+-- Export:
+return Interface
 
 --[[
   2026-04-30
   2026-05-01
   2026-05-02
   2026-05-03
+  2026-05-06
+  2026-05-09
 ]]
