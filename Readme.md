@@ -23,14 +23,16 @@ that are at even positions in "real data" part.
 Preparation and printing of initial "raw data".
 
 ```Lua
-local create_string_value = request('StringValue.create')
-local create_ranges_tree = request('RangesTree.create')
-local create_range = request('Range.create')
+local create_value = request('StringValue.Interface').create
+local create_ranges_tree = request('RangesTree.Interface').create
+local create_range = request('Range.Interface').create
 local apply_ranges = request('apply_ranges')
 
 local test_str = '~1234--56789='
 
-local InputData = create_string_value(test_str)
+local InputData = create_value()
+InputData:SetValue(test_str)
+
 local StringFields = create_ranges_tree()
 local OutputData
 
