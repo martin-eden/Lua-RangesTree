@@ -10,15 +10,31 @@ Tree contains nested named ranges and provides method to resolve
 node ranges to tree root's frame.
 
 
-## Usage
+## Example
 
-(Below is annotated current example from ["Getting string"][string_test].)
+That's illustrated [Test_StringRanges][string_test].
 
-Okay, you have string with fixed data layout:
-`~` `1` `2` `3` `4` `-` `-` `5` `6` `7` `8` `9` `=`
+Meat is weak in words. I'll draw picture.
 
-There is "real data" part with digits. You need to get two middle characters
-that are at even positions in "real data" part.
+```
+ ┌───────────────────────────┐
+ │ ~ 1 2 3 4 - - 5 6 7 8 9 = │ ← Data
+ └───────────────────────────┘
+     ~~~~~~~     ~~~~~~~~~
+     ┌───────────────────┐
+     │ 1 2 3 4 5 6 7 8 9 │ ← Real data
+     └───────────────────┘
+         ~   ~   ~   ~
+          ┌─────────┐
+          │ 2 4 6 8 │ ← Even part
+          └─────────┘
+              ~ ~
+            ┌─────┐
+            │ 4 6 │ ← Result
+            └─────┘
+```
+
+Now same thing in code.
 
 Preparation and printing of initial "raw data".
 
@@ -62,15 +78,8 @@ StringFields:AddNameAndRanges(
 
 StringFields:AddNameAndRange('Part.Even.Middle', create_range(2, 2))
 ```
-Note that nested node ranges does not depend from parent's ranges.
-Arguments for `create_range()` are starting index (from 1) and length.
 
-We are using two convenience functions `AddNameAndRanges()` and
-`AddNameAndRange()`. But core functions are `AddName()` and `AddRange()`.
-
-
-Getting and printing our "two middle even chars from essential data":
-
+Getting and printing result:
 ```Lua
 OutputData = create_string_value()
 apply_ranges(InputData, StringFields:GetRanges('Part.Even.Middle'), OutputData)
